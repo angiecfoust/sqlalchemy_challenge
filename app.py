@@ -46,7 +46,7 @@ def home():
     print("Server received request for 'Home' page...")
     return (f"Welcome to the'Hawaii' page!<br/>"
             f"Available Routes:<br/>"
-            f"/api.v1.0/precipitation<br/>"
+            f"/api/v1.0/precipitation<br/>"
             f"/api/v1.0/station<br/>"
             f"/api/v1.0/tobs<br/>"
             f"/api/v1.0/<start><br/>"
