@@ -12,13 +12,15 @@ from flask import Flask, jsonify
 #################################################
 # Database Setup
 #################################################
-engine = create_engine("sqlite:///hawaii.sqlite")
+engine = create_engine("sqlite:///Resources/hawaii.sqlite")
 
 # reflect an existing database into a new model
 Base = automap_base()
 
 # reflect the tables
 Base.prepare(autoload_with=engine)
+Base.classes.keys
+print
 
 # Save references to each table
 Meas = Base.classes.measurement
@@ -174,33 +176,31 @@ def start_date(start):
 # start/end- accepts the start and end dates as parameters from the URL
 # returns min, max, avg temperatures calculated from the given start date to the given end date
 
-#COMMENTED OUT- IT IS NOT WORKING
-
-#@app.route("/api/v1.0/<start>/<end>")
-#def start_end(start_end):
-    #print("Server received request for 'End' page...")
+@app.route("/api/v1.0/<start>/<end>")
+def start_end(start):
+    print("Server received request for 'End' page...")
 
     #create session link
-    #session = Session(engine)
+    session = Session(engine)
 
     #query temp statistics from given start to end of data
-    #sel = [func.min(Meas.tobs), func.max(Meas.tobs), func.avg(Meas.tobs)]
+    sel = [func.min(Meas.tobs), func.max(Meas.tobs), func.avg(Meas.tobs)]
 
-    #stat_sum = session.query(*sel).\
-        #filter(Meas.date >= start_date).filter(Meas.date <= end_date).all()
+    stat_sum = session.query(*sel).\
+        filter(Meas.date >= start).filter(Meas.date <= start).all()
     
-    #session.close()
+    session.close()
 
     #create dictionary from data & convert to json
-    #results = []
+    results = []
 
-    #for min, max, avg in stat_sum:
-        #results_dict ={}
-        #results_dict["min"] = min
-        #results_dict["max"] = max
-        #results_dict["avg"] = avg
+    for min, max, avg in stat_sum:
+        results_dict ={}
+        results_dict["min"] = min
+        results_dict["max"] = max
+        results_dict["avg"] = avg
 
-    #return jsonify(results)
+    return jsonify(results)
 
 
 if __name__ == "__main__":
