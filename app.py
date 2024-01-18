@@ -169,6 +169,7 @@ def start_date(start):
         results_dict["min"] = min
         results_dict["max"] = max
         results_dict["avg"] = avg
+        results.append(results_dict)
 
     return jsonify(results)
 
@@ -177,7 +178,7 @@ def start_date(start):
 # returns min, max, avg temperatures calculated from the given start date to the given end date
 
 @app.route("/api/v1.0/<start>/<end>")
-def start_end(start):
+def start_end(start, end):
     print("Server received request for 'End' page...")
 
     #create session link
@@ -187,7 +188,7 @@ def start_end(start):
     sel = [func.min(Meas.tobs), func.max(Meas.tobs), func.avg(Meas.tobs)]
 
     stat_sum = session.query(*sel).\
-        filter(Meas.date >= start).filter(Meas.date <= start).all()
+        filter(Meas.date >= start).filter(Meas.date <= end).all()
     
     session.close()
 
@@ -199,6 +200,7 @@ def start_end(start):
         results_dict["min"] = min
         results_dict["max"] = max
         results_dict["avg"] = avg
+        results.append(results_dict)
 
     return jsonify(results)
 
